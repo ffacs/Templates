@@ -42,6 +42,3 @@ struct MATRIX{
     }
     #undef MAXN
 };
-int main() {
-    return 0;
-}

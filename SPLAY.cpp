@@ -99,5 +99,3 @@ public:
     #undef MAXN
     #undef INF
 }s;
-int main(){
-}
