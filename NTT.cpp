@@ -58,6 +58,8 @@ int main(){
     init(cnt);dft(a,cnt);dft(b,cnt);
     for(int i=0;i<cnt;i++) c[i]=a[i]*b[i];
     idft(c,cnt);
+    
+
 
     for(int i=0;i<=n+m;i++) printf("%lld ",c[i]);cout<<"\n";
 }
