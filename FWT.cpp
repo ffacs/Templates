@@ -1,8 +1,10 @@
 #include<bits/stdc++.h>
 typedef long long ll;
+using namespace std;
 const ll p=998244353;
 const ll inv2=499122177;
-int A[1<<17],B[1<<17],a[1<<17],b[1<<17],n,tot;
+const int rank=20;
+int A[1<<rank],B[1<<rank],a[1<<rank],b[1<<rank],n,tot;
 void init(){
     for(int i=0;i<(1<<n);++i){
         a[i]=A[i];b[i]=B[i];
