@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long double ld;
+typedef double ld;
 ld a,b,c,d;
 inline ld f(ld x) {
 	return (c*x+d)/(a*x+b);
