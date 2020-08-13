@@ -9,6 +9,7 @@ inline ll pow(ll a, ll b) {
     for (;b;a=a*a%mod,b>>=1) if(b&1)ans=ans*a%mod;
     return ans;
 }
+
 inline void exgcd(ll a,ll b,ll &g,ll &x,ll &y) {
     if (!b) g=a,x=1,y=0;
     else exgcd(b,a%b,g,y,x),y-=x*(a/b);
