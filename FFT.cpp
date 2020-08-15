@@ -1,37 +1,33 @@
 #include <bits/stdc++.h>
 using namespace std;
+typedef long long ll;
 struct Complex{
     double r,i;
     Complex(double r,double i):r(r),i(i){}
-    inline void real ( const double& x )  {  r = x ;  }
-	inline double real ( )  {  return r ;  }
     Complex(){}
-	inline Complex operator + ( const Complex& rhs )  const  {
-		return Complex ( r + rhs.r, i + rhs.i ) ;
-	}
-	inline Complex operator - ( const Complex& rhs )  const  {
-		return Complex ( r - rhs.r, i - rhs.i ) ;
-	}
-	inline Complex operator * ( const Complex& rhs )  const  {
-		return Complex ( r * rhs.r - i * rhs.i, r * rhs.i + i * rhs.r ) ;
-	}
-	inline void operator /= ( const double& x )   {
-		r /= x, i /= x ;
-	}
-	inline void operator *= ( const Complex& rhs )   {
-		*this = Complex ( r * rhs.r - i * rhs.i, r * rhs.i + i * rhs.r ) ;
-	}
-	inline void operator += ( const Complex& rhs )   {
-		r += rhs.r, i += rhs.i ;
-	}
-	inline Complex conj ()  {
-		return Complex ( r, -i ) ;
-	}
+    inline Complex operator + ( const Complex& rhs )  const  {
+        return Complex ( r + rhs.r, i + rhs.i ) ;
+    }
+    inline Complex operator - ( const Complex& rhs )  const  {
+        return Complex ( r - rhs.r, i - rhs.i ) ;
+    }
+    inline Complex operator * ( const Complex& rhs )  const  {
+        return Complex ( r * rhs.r - i * rhs.i, r * rhs.i + i * rhs.r ) ;
+    }
+    inline void operator /= ( const double& x )   {
+        r /= x, i /= x ;
+    }
+    inline void operator *= ( const Complex& rhs )   {
+        *this = Complex ( r * rhs.r - i * rhs.i, r * rhs.i + i * rhs.r ) ;
+    }
+    inline void operator += ( const Complex& rhs )   {
+        r += rhs.r, i += rhs.i ;
+    }
 };
 
-const static int N=4e6+5;
+const int maxn=4e6+6;
 #define PI 3.14159265354
-int pos[N];
+int pos[maxn];
 void init ( const int& n )  {
     for ( int i = 0 ,j=0; i < n ; ++ i )  {
         pos[i]=j;for (int l = n >> 1; (j ^= l) < l; l >>= 1);
@@ -63,16 +59,18 @@ void idft ( Complex *a, const int& n )  {
     transform ( a, n, 1) ;
     for ( int i = 0 ; i < n ; ++ i ) a [i] /= n ;
 }
-const int maxn=4e6+6;
-Complex a[maxn],b[maxn],c[maxn];
+Complex A[maxn],B[maxn],C[maxn];
+void FFT(int n,int m) {// len(A),len(B)
+    int cnt=1;while(cnt<=(n+m)) cnt<<=1;
+    init(cnt);dft(A,cnt);dft(B,cnt);
+    for(int i=0;i<cnt;i++) C[i]=A[i]*B[i];
+    idft(C,cnt);
+    for(int i=0;i<=n+m;i++) C[i].r=ll(C[i].r+0.01);
+}
 int main(){
     int n,m,tem;cin>>n>>m;
-    for(int i=0;i<=n;i++) scanf("%d",&tem),a[i].r=tem;
-    for(int i=0;i<=m;i++) scanf("%d",&tem),b[i].r=tem;
-    int cnt=1;while(cnt<=(n+m)) cnt<<=1;
-
-    init(cnt);dft(a,cnt);dft(b,cnt);
-    for(int i=0;i<cnt;i++) c[i]=a[i]*b[i];
-    idft(c,cnt);
-    for(int i=0;i<=n+m;i++) printf("%d ",int(c[i].r+1e-2));cout<<"\n";
+    for(int i=0;i<=n;i++) scanf("%d",&tem),A[i].r=tem;
+    for(int i=0;i<=m;i++) scanf("%d",&tem),B[i].r=tem;
+    FFT(n,m);
+    for(int i=0;i<=n+m;i++) printf("%lld ",ll(C[i].r));cout<<"\n";
 }
