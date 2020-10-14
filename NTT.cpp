@@ -51,7 +51,7 @@ void idft(ll *a, const int &n) {
 const int maxn=4e6+6;
 ll a[maxn],b[maxn],c[maxn];
 int main(){
-    int n,m,tem;cin>>n>>m;
+    int n,m;cin>>n>>m;
     for(int i=0;i<=n;i++) scanf("%lld",a+i);
     for(int i=0;i<=m;i++) scanf("%lld",b+i);
     int cnt=1;while(cnt<=(n+m)) cnt<<=1;
