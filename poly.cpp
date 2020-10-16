@@ -49,32 +49,42 @@ void idft(ll *a, const int &n) {
     for (int i=0;i<n;i++) a[i]=a[i]*INV % mod;
 }
 const int maxn=4e6+6;
-ll a[maxn],b[maxn],c[maxn],pic[maxn],plc[maxn];
+ll a[maxn],b[maxn],c[maxn],pic[maxn],pec[maxn],plc[maxn],ppc[maxn];
 int INV[maxn];
 void poly_inv(int n,ll *a,ll *b) {
-    if(n==1) {b[0]=inv(a[0]);return;}
-    poly_inv((n+1)/2,a,b);
-    int cnt=1;while(cnt<=n*2-2) cnt<<=1;init(cnt);
-    copy(a,a+n,pic);fill(pic+n,pic+cnt,0);dft(pic,cnt);dft(b,cnt);
-    for(int i=0;i<cnt;i++) (b[i]*=(2ll-pic[i]*b[i])%mod)%=mod;
-    for(int i=0;i<cnt;i++) b[i]=(b[i]+mod)%mod;
-    idft(b,cnt);fill(b+n,b+cnt,0);
+	if(n==1) {b[0]=inv(a[0]);return;}
+	poly_inv((n+1)/2,a,b);
+	int cnt=1;while(cnt<=n*2) cnt<<=1;init(cnt);
+	copy(a,a+n,pic);fill(pic+n,pic+cnt,0);fill(b+n,b+cnt,0);dft(pic,cnt);dft(b,cnt);
+	for(int i=0;i<cnt;i++) (b[i]*=(2ll-pic[i]*b[i])%mod)%=mod;
+	for(int i=0;i<cnt;i++) b[i]=(b[i]+mod)%mod;
+	idft(b,cnt);fill(b+n,b+cnt,0);
 }
 void poly_ln(int n,ll *a,ll *b) { //G'=F'/F
     poly_inv(n,a,b);
+    int cnt=1;while(cnt<=n*2-3) cnt<<=1;init(cnt);
     for(int i=0;i<n-1;i++) plc[i]=a[i+1]*(i+1)%mod;
-    int cnt=1;while(cnt<=n-1+n-2) cnt<<=1;init(cnt);
-    fill(plc+n-1,plc+cnt,0);dft(plc,cnt);dft(b,cnt);
-    for(int i=0;i<cnt;i++) b[i]=plc[i]*b[i];
-    idft(b,cnt);fill(b+n,b+cnt,0);
-    for(int i=n-1;i>=1;i--) b[i]=b[i-1]*INV[i]%mod;b[0]=0;
+    fill(plc+n-1,plc+cnt,0);fill(b+n,b+cnt,0);dft(plc,cnt);dft(b,cnt);
+    for(int i=0;i<cnt;i++) b[i]=plc[i]*b[i]%mod;
+	idft(b,cnt);for(int i=n-1;i>=1;i--) b[i]=b[i-1]*INV[i]%mod;b[0]=0;
+	fill(b+n,b+cnt,0);
 }
+void poly_exp(int n,ll *a,ll *b) {
+	if(n==1) {b[0]=1;return;}
+	poly_exp((n+1)/2,a,b);poly_ln(n,b,pec);
+	int cnt=1;while(cnt<=n*2-2) cnt<<=1;init(cnt);
+	for(int i=0;i<n;i++) pec[i]=(-pec[i]+a[i])%mod;pec[0]+=1;
+	dft(pec,cnt);dft(b,cnt);
+	for(int i=0;i<cnt;i++) b[i]=(b[i]*pec[i])%mod;
+	idft(b,cnt);fill(b+n,b+cnt,0);
+}
+void poly_pow(int n,ll *a,ll *b,ll k) {
+	poly_ln(n,a,ppc);
+	for(int i=0;i<n;i++) ppc[i]*=k;
+	poly_exp(n,ppc,b);
+}
+char buff[maxn];
 int main(){
 	ios::sync_with_stdio(false);
 	cin.tie(0);cout.tie(0);
-    int n;cin>>n;
-	INV[0]=0;INV[1]=1;for(int i=2;i<n;++i) INV[i]=(mod-mod/i)*INV[mod%i]%mod;
-    for(int i=0;i<n;i++) cin>>a[i];
-    poly_ln(n,a,b);
-    for(int i=0;i<n;i++) cout<<b[i]<<' ';
 }
